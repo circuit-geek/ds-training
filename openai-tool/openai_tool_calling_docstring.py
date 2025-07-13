@@ -2,7 +2,7 @@ import json
 from openai import AsyncAzureOpenAI
 from agents import (
     Agent, Runner,
-    OpenAIChatCompletionsModel, set_tracing_disabled,
+    OpenAIChatCompletionsModel,
     function_tool, FunctionTool
 )
 from dotenv import load_dotenv
@@ -10,7 +10,6 @@ import os
 import asyncio
 
 load_dotenv()
-set_tracing_disabled(disabled=True) ## Since we are Azure OpenAI instead of OpenAI
 
 llm_client = AsyncAzureOpenAI(
     api_key=os.getenv("OPENAI_API_TOKEN"),
@@ -28,9 +27,9 @@ def get_trophies(team_name):
     a string description with the team along with trophies won
     """
     trophies_map = {
-        "CSK": "7 => 5 in IPL and 2 in Champions League",
-        "MI": "7 => 5 in IPL and 2 in Champions League",
-        "RCB": "1 => 1 in IPL"
+        "CSK": "7 => 5 in IPL (2010, 2011, 2018, 2021, 2023) and 2 in Champions League (2010 and 2014)",
+        "MI": "7 => 5 in IPL (2013, 2015, 2017, 2019, 2020) and 2 in Champions League (2011 and 2013)",
+        "RCB": "1 => 1 in IPL (2025)"
     }
 
     return trophies_map.get(team_name, "Requested local club team not found")
@@ -48,7 +47,9 @@ search_agent = Agent(
 
 for tool in search_agent.tools:
     if isinstance(tool, FunctionTool):
+        print("************************")
         print("JSON Tool Schema")
+        print("************************")
         print(tool.name)
         print(tool.description)
         print(json.dumps(tool.params_json_schema, indent=4))
@@ -60,6 +61,7 @@ async def main():
         search_agent,
         "How many trophies have CSK won in total?"
     )
+    print("****** Result *******")
     print(response.final_output)
 
 if __name__ == "__main__":

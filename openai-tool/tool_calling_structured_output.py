@@ -2,7 +2,7 @@ import json
 from openai import AsyncAzureOpenAI
 from agents import (
     Agent, Runner,
-    OpenAIChatCompletionsModel, set_tracing_disabled,
+    OpenAIChatCompletionsModel,
     function_tool, FunctionTool
 )
 from dotenv import load_dotenv
@@ -12,7 +12,6 @@ from pydantic import BaseModel
 from typing import List
 
 load_dotenv()
-set_tracing_disabled(disabled=True) ## Since we are Azure OpenAI instead of OpenAI
 
 llm_client = AsyncAzureOpenAI(
     api_key=os.getenv("OPENAI_API_TOKEN"),

@@ -72,7 +72,6 @@ async def main():
     )
     print("****** Result *******")
     print(response.final_output)
-    print()
 
 if __name__ == "__main__":
     asyncio.run(main())

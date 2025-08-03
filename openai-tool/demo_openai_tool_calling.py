@@ -30,7 +30,6 @@ def div_nums(a, b):
     return a//b
 
 def get_tool_response():
-
     messages = [{
         "role": "user",
         "content": "I want to know the following calculations, what is 5 + 3? what is 10 - 2? and what is 8 * 3?"
